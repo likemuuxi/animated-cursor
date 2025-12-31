@@ -4,6 +4,7 @@ import { AnimatedCursorSettingTab } from "src/setting-tab";
 import { tableCellObserver } from "src/observer";
 import { hookCursorPlugin } from "src/hook";
 import { CursorPluginInstance } from "src/typings";
+import { cometCursorPlugin } from "src/comet-cursor";
 
 export interface AnimatedCursorSettings {
 	useTransform: boolean;
@@ -35,7 +36,9 @@ export default class AnimatedCursorPlugin extends Plugin {
 
 		this.alreadyPatched = false;
 		this.addSettingTab(new AnimatedCursorSettingTab(this.app, this));
-		this.registerEditorExtension(tableCellObserver);
+		this.registerEditorExtension(
+			[tableCellObserver, cometCursorPlugin].filter(Boolean)
+		);
 
 		let activeEditor = this.app.workspace.activeEditor?.editor;
 		if (activeEditor) this.tryPatch(activeEditor);
