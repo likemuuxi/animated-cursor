@@ -1,6 +1,6 @@
 [2.0.2]
 ### Fix
-- Compatible Components plugin.
+- Limit the effective range of the cursor effect.
 
 [2.0.1]
 ### New
