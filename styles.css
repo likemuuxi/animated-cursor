@@ -121,6 +121,11 @@ settings:
 	display: block;
 }
 
-.animated-cursor-hide-native .cm-cursorLayer .cm-cursor {
+/* .animated-cursor-hide-native .cm-cursorLayer .cm-cursor {
+	display: none !important;
+} */
+
+/* Cursor Hiding: Only hide within the main markdown editor */
+.animated-cursor-hide-native .markdown-source-view .cm-cursorLayer .cm-cursor {
 	display: none !important;
 }
