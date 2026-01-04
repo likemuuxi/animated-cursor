@@ -4,14 +4,31 @@ import { AnimatedCursorSettingTab } from "src/setting-tab";
 import { tableCellObserver } from "src/observer";
 import { hookCursorPlugin } from "src/hook";
 import { CursorPluginInstance } from "src/typings";
-import { cometCursorPlugin } from "src/comet-cursor";
+import { cometCursorPlugin, updateCometConfig } from "src/comet-cursor";
+import { blinkCursorPlugin, updateBlinkConfig } from "src/blink-cursor";
 
 export interface AnimatedCursorSettings {
 	useTransform: boolean;
+	comet: {
+		enabled: boolean;
+		color: string;
+	};
+	blink: {
+		enabled: boolean;
+		color: string;
+	};
 }
 
 export const DEFAULT_SETTINGS: AnimatedCursorSettings = {
-	useTransform: true
+	useTransform: true,
+	comet: {
+		enabled: true,
+		color: "#9873f7"
+	},
+	blink: {
+		enabled: false,
+		color: "#d6d1ff"
+	}
 }
 
 function iterMarkdownView(app: App, callback: (view: MarkdownView) => unknown): void {
@@ -33,11 +50,14 @@ export default class AnimatedCursorPlugin extends Plugin {
 
 	public async onload(): Promise<void> {
 		await this.loadSettings();
+		updateCometConfig(this.settings.comet);
+		updateBlinkConfig(this.settings.blink);
+		this.updateBodyClass();
 
 		this.alreadyPatched = false;
 		this.addSettingTab(new AnimatedCursorSettingTab(this.app, this));
 		this.registerEditorExtension(
-			[tableCellObserver, cometCursorPlugin].filter(Boolean)
+			[tableCellObserver, cometCursorPlugin, blinkCursorPlugin].filter(Boolean)
 		);
 
 		let activeEditor = this.app.workspace.activeEditor?.editor;
@@ -49,7 +69,7 @@ export default class AnimatedCursorPlugin extends Plugin {
 
 		this.app.workspace.trigger("parse-style-settings");
 
-		console.log("Load Animated Cursor plugin");
+		console.log("Load Animated Cursor plugin. Configs:", this.settings.comet.enabled, this.settings.blink.enabled);
 	}
 
 	public async loadSettings(): Promise<void> {
@@ -58,6 +78,15 @@ export default class AnimatedCursorPlugin extends Plugin {
 
 	public async saveSettings(): Promise<void> {
 		await this.saveData(this.settings);
+		updateCometConfig(this.settings.comet);
+		updateBlinkConfig(this.settings.blink);
+		this.updateBodyClass();
+	}
+
+	private updateBodyClass(): void {
+		// Hide native cursor if either effect is enabled, because Blink is a REPLACEMENT, and Comet is a REPLACEMENT.
+		const anyHideNative = this.settings.comet.enabled || this.settings.blink.enabled;
+		document.body.classList.toggle("animated-cursor-hide-native", anyHideNative);
 	}
 
 	public onunload(): void {
