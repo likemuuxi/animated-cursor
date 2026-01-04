@@ -58,7 +58,7 @@ class BlinkCursorPlugin extends CursorEffectPlugin {
         if (update.docChanged || update.selectionSet) {
             this.lastActivityTime = Date.now();
             // Force redraw immediately
-            if (this.initialized) {
+            if (this.initialized && this.ctx) {
                 this.render(this.ctx);
             }
         }
