@@ -7,11 +7,13 @@ const BLINK_ENABLED_CLASS = "blink-cursor-enabled";
 export interface BlinkCursorConfig extends CursorEffectConfig {
     enabled: boolean;
     color: string;
+    tailLength: number;
 }
 
 let config: BlinkCursorConfig = {
     enabled: false,
-    color: "#ff0000",
+    color: "#d6d1ff",
+    tailLength: 8,
 };
 
 export function updateBlinkConfig(newConfig: Partial<BlinkCursorConfig>): void {
@@ -110,9 +112,14 @@ class BlinkCursorPlugin extends CursorEffectPlugin {
         ctx.fillStyle = config.color;
 
         // --- Render Ghosts ---
+        // Calculate decay based on tail length. 
+        // 0.6 opacity / 15 frames ~= 0.04 decay.
+        // Formula: 0.6 / tailLength
+        const decay = 0.6 / (config.tailLength || 15);
+
         for (let i = this.ghosts.length - 1; i >= 0; i--) {
             const g = this.ghosts[i];
-            g.opacity -= 0.03; // Slightly slower fade
+            g.opacity -= decay;
 
             if (g.opacity <= 0) {
                 this.ghosts.splice(i, 1);

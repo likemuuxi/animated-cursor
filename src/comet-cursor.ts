@@ -13,7 +13,7 @@ export interface CometCursorConfig extends CursorEffectConfig {
 
 let config: CometCursorConfig = {
 	enabled: true,
-	color: "#00e5ff",
+	color: "#9873f7",
 	width: 2,
 	tailLength: 12,
 	smoothness: 0.2
@@ -66,7 +66,7 @@ class CometCursorPlugin extends CursorEffectPlugin {
 
 		if (isMoving) {
 			this.trail.push({ x: this.currentX, y: this.currentY });
-			if (this.trail.length > config.tailLength) this.trail.shift();
+			if (this.trail.length > (config.tailLength || 12)) this.trail.shift();
 			this.drawTrail(ctx);
 		} else {
 			this.trail = [];

@@ -9,6 +9,7 @@ import { blinkCursorPlugin, updateBlinkConfig } from "src/blink-cursor";
 
 export interface AnimatedCursorSettings {
 	useTransform: boolean;
+	trailLength: number;
 	comet: {
 		enabled: boolean;
 		color: string;
@@ -21,6 +22,7 @@ export interface AnimatedCursorSettings {
 
 export const DEFAULT_SETTINGS: AnimatedCursorSettings = {
 	useTransform: true,
+	trailLength: 8,
 	comet: {
 		enabled: true,
 		color: "#9873f7"
@@ -50,8 +52,8 @@ export default class AnimatedCursorPlugin extends Plugin {
 
 	public async onload(): Promise<void> {
 		await this.loadSettings();
-		updateCometConfig(this.settings.comet);
-		updateBlinkConfig(this.settings.blink);
+		updateCometConfig({ ...this.settings.comet, tailLength: this.settings.trailLength });
+		updateBlinkConfig({ ...this.settings.blink, tailLength: this.settings.trailLength });
 		this.updateBodyClass();
 
 		this.alreadyPatched = false;
@@ -78,8 +80,8 @@ export default class AnimatedCursorPlugin extends Plugin {
 
 	public async saveSettings(): Promise<void> {
 		await this.saveData(this.settings);
-		updateCometConfig(this.settings.comet);
-		updateBlinkConfig(this.settings.blink);
+		updateCometConfig({ ...this.settings.comet, tailLength: this.settings.trailLength });
+		updateBlinkConfig({ ...this.settings.blink, tailLength: this.settings.trailLength });
 		this.updateBodyClass();
 	}
 

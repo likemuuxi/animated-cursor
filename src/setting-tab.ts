@@ -27,6 +27,8 @@ export class AnimatedCursorSettingTab extends PluginSettingTab {
 				})
 			);
 
+
+
 		// --- EFFECT SELECTION ---
 		let currentEffect = "none";
 		if (this.plugin.settings.comet.enabled) currentEffect = "comet";
@@ -78,6 +80,20 @@ export class AnimatedCursorSettingTab extends PluginSettingTab {
 				);
 		}
 
+		if (this.plugin.settings.blink.enabled || this.plugin.settings.comet.enabled) {
+			new Setting(this.containerEl)
+				.setName("Trail Length")
+				.setDesc("Controls how quickly the trail vanishes (longer value = longer trail).")
+				.addSlider(slider => slider
+					.setLimits(5, 50, 1)
+					.setValue(this.plugin.settings.trailLength)
+					.setDynamicTooltip()
+					.onChange(val => {
+						this.plugin.settings.trailLength = val;
+						this.plugin.saveSettings();
+					})
+				);
+		}
 		// --- General Settings (Always visible if relevant) ---
 		// Add back 'useTransform' if needed, but keeping it minimal for now per request.
 	}
