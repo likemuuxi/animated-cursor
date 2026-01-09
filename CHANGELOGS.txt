@@ -1,3 +1,7 @@
+[2.0.3]
+### Fix
+- Remove the small white dot in the middle of the cursor.
+
 [2.0.2]
 ### Fix
 - Limit the effective range of the cursor effect.
