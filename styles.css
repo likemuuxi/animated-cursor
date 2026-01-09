@@ -81,10 +81,6 @@ settings:
 	height: 100%;
 }
 
-.comet-cursor-enabled .cm-cursorLayer .cm-cursor {
-	opacity: 0;
-}
-
 .cm-editor.cm-focused>.cm-scroller>.cm-cursorLayer.cm-blinkLayer,
 .cm-editor>.cm-scroller>.cm-cursorLayer.cm-overTableCell.cm-blinkLayer {
 	animation-name: cm-cursor-blink !important;

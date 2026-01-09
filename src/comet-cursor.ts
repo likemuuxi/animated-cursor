@@ -104,11 +104,6 @@ class CometCursorPlugin extends CursorEffectPlugin {
 		ctx.shadowBlur = isMoving ? 10 : 0;
 		ctx.shadowColor = config.color;
 		ctx.fillRect(this.currentX - 1, this.currentY, 2, height);
-
-		ctx.beginPath();
-		ctx.arc(this.currentX, this.currentY + height / 2, 2, 0, Math.PI * 2);
-		ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
-		ctx.fill();
 	}
 
 	private hexToRgba(hex: string, alpha: number): string {
