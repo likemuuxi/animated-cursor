@@ -1,3 +1,7 @@
+[2.0.4]
+### Fix
+- Fixed the issue of Blink animation being too graceful.
+
 [2.0.3]
 ### Fix
 - Remove the small white dot in the middle of the cursor.

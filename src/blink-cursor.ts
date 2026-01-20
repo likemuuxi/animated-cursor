@@ -91,7 +91,10 @@ class BlinkCursorPlugin extends CursorEffectPlugin {
         // Spawn ghosts continuously to fill gaps - 1px for perfect smoothness
         const spawnInterval = 1;
 
-        if (dist > spawnInterval) {
+        if (dist > 60) {
+            this.lastX = this.currentX;
+            this.lastY = this.currentY;
+        } else if (dist > spawnInterval) {
             const steps = Math.ceil(dist / spawnInterval);
             for (let i = 1; i <= steps; i++) {
                 const t = i / steps;
